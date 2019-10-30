@@ -1,0 +1,41 @@
+public class Main
+{
+	public static void main(String[] args) {
+		String[] s = {"Z11-100","Z12-150","Z13-120","Z11-80","Z12-50","Z13-40","Z11-200","Z12-0","Z13-10","Z11-170"};
+		int z11 = 0, z12 = 0, z13 = 0;
+		double gsm1 = 0, gsm2 = 0;
+		for (String str: s) {
+		    char[] ch = str.toCharArray();
+		    switch (ch[2]) {
+		        case '1':
+		            z11 = z11 + Integer.valueOf(str.substring(4));
+		            break;
+		        case '2':
+		            z12 = z12 + Integer.valueOf(str.substring(4));
+		            break;
+		        case '3':
+		            z13 = z13 + Integer.valueOf(str.substring(4));
+		            break;
+		    }
+		    //System.out.println(Integer.valueOf(str.substring(4)));
+		}
+		gsm1 = (z11 * 46.1 + z12 * 47.5 + z13 * 48.9) * 15;
+		gsm2 = z11 * 46.1 * 12.5 + z12 * 47.5 * 12 + z13 * 48.9 * 11.5;
+		System.out.println ("Если у всех авто расход 15 литров, то общая стоимость ГСМ равна " + gsm1);
+		System.out.println ("Если у всех авто расход разный, то общая стоимость ГСМ равна " + gsm2);
+		if (z11 < z12 && z11 < z13) {
+		    System.out.println ("Минимальная стоимость расходов у типа авто Z11");
+		}
+		else if (z12 < z13) {
+		    System.out.println ("Минимальная стоимость расходов у типа авто Z12");
+		}
+		else System.out.println ("Минимальная стоимость расходов у типа авто Z13");
+		if (z11 > z12 && z11 > z13) {
+		    System.out.println ("Максимальная стоимость расходов у типа авто Z11");
+		}
+		else if (z12 > z13) {
+		    System.out.println ("Максимальная стоимость расходов у типа авто Z12");
+		}
+		else System.out.println ("Максимальная стоимость расходов у типа авто Z13");
+	}
+}
