@@ -1,0 +1,15 @@
+public class Main
+{
+	public static void main(String[] args) {
+		union_string("abdc","ckke");
+	}
+	public static void union_string(String str1, String str2) {
+	    String itog = "";
+	    for (char c: (str1+str2).toCharArray()) {
+	        if (itog.indexOf(c) == -1) {
+	            itog += c;
+	        }
+	    }
+	    System.out.println(itog);
+	}
+}
