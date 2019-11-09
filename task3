@@ -1,25 +1,30 @@
 public class Main
 {
 	public static void main(String[] args) {
-	    func("abcabcd",'a');
+	    variant1("abcabcd",'a');
+	    variant2("abcabcd",'a');
 	}
-	public static void func(String forFind, char s) {
-	    int res1 = 0, res2 = 0;
+	public static void variant1(String forFind, char s) {
+	    System.out.print("Вариант 1\nСимвол \"" + s + "\" встречается на следующих позициях: ");
+	    int res = 0;
 	    char[] ch = forFind.toCharArray();
 	    for (int i = 0; i < ch.length; i++) {
 	        if (ch[i] == s) {
-	            res1++;
+	            res++;
+	            System.out.print(i + " ");
 	        }
 	    }
-	    System.out.println(res1);
+	    System.out.println("\nКоличество символов \"" + s + "\" в введенной строке равно " + res);
+	}
+	public static void variant2(String forFind, char s) {
+	    int res = 0;
 	    int dl = 0;
 	    while (forFind.indexOf(s) != -1) {
-	        res2++;
-	        //System.out.println(forFind.indexOf(s));
+	        res++;
 	        dl = dl + forFind.indexOf(s);
 	        System.out.println(dl);
 	        forFind = forFind.substring(forFind.indexOf(s)+1);
 	    }
-	    System.out.println(res2);
+	    System.out.println(res);
 	}
 }
