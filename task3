@@ -17,14 +17,15 @@ public class Main
 	    System.out.println("\nКоличество символов \"" + s + "\" в введенной строке равно " + res);
 	}
 	public static void variant2(String forFind, char s) {
+	    System.out.print("Вариант 2\nСимвол \"" + s + "\" встречается на следующих позициях: ");
 	    int res = 0;
 	    int dl = 0;
 	    while (forFind.indexOf(s) != -1) {
 	        res++;
-	        dl = dl + forFind.indexOf(s);
-	        System.out.println(dl);
-	        forFind = forFind.substring(forFind.indexOf(s)+1);
+	        dl += forFind.indexOf(s);
+	        System.out.print(dl + res -1  + " ");
+	        forFind = forFind.substring(forFind.indexOf(s) + 1);
 	    }
-	    System.out.println(res);
+	    System.out.println("\nКоличество символов \"" + s + "\" в введенной строке равно " + res);
 	}
 }
