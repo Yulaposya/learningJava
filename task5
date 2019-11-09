@@ -1,20 +1,20 @@
 public class Main
 {
 	public static void main(String[] args) {
-		excel("AZ19");
+		excel("BAA19");
 	}
 	public static void excel(String cell) {
 		String a = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 		int row = 0, col = 0, i = 0;
 		char[] cell_c = cell.toCharArray();
-		String cell_row = "";
+		String cell_col = "";
 		while (Integer.valueOf(cell_c[i])<48 || Integer.valueOf(cell_c[i])>57) {
-		    cell_row += cell_c[i];
+		    cell_col += cell_c[i];
 		    i++;
 		}
-		col = Integer.valueOf(cell.substring(cell_row.length()));
-		for (char c: cell_row.toCharArray()) {
-		    row += a.indexOf(c)+1;
+		row = Integer.valueOf(cell.substring(cell_col.length()));
+		for (int j = cell_col.length()-1; j >= 0; j--) {
+		    col += (a.indexOf(cell_col.toCharArray()[j]) + 1) * Math.pow(26, cell_col.length()-1-j);
 		}
 		System.out.println("Номер строки: " + row + ", номер столбца: " + col);
 	}
