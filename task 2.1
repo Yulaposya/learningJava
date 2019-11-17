@@ -1,0 +1,141 @@
+public class Main
+{
+	static class Car {
+	    String type, num;
+	    int probeg, param;
+	    Car () {
+	    };
+	    Car (String type1, String num1, int probeg1, int param1) {
+	        type = type1;
+	        num = num1;
+	        probeg = probeg1;
+	        param = param1;
+	    }
+	    public void showCar () {
+	        System.out.print("Машина номер " + num + " типа " + type + ". Пробег: " + probeg);
+	        if (param == 0) {
+	            System.out.print("\n");
+	        }
+	        else {
+	            System.out.print(". Параметр: " + param + "\n");
+	        }
+	    }
+	}
+	
+	public static void main(String[] args) {
+		String[] str = {"C100_1-100","C200_1-120-1200","C300_1-120-30","C400_1-80-20","C100_2-50","C200_2-40-1000","C300_2-200-45","C400_2-100-20","C100_3-10","C200_3-170-1100","C300_3-150-29","C400_3-100-28","C100_4-300","C200_4-100-750","C300_4-32-15"};
+		String[] types = new String[str.length];
+		String[] nums = new String[str.length];
+		int[] probegs = new int[str.length];
+		int[] params = new int[str.length];
+		Car[] cars = new Car[str.length];
+		double gsm_itog = 0;
+		double[] gsm = new double[4];
+		double[] cost = {46.10,48.90,47.50,48.90};
+		double[] rashod = {12.5,12,11.5,20};
+		for (int i = 0; i < str.length; i++) {
+		    types[i] = str[i].substring(0,str[i].indexOf("_")); //выделяем тип: подстрока с начала до символа "_"
+		    nums[i] = str[i].substring(str[i].indexOf("_")+1, str[i].indexOf("-")); //выделяем номер: подстрока с символа "_" до символа "-"
+		    if (str[i].substring(str[i].indexOf("-")+1).indexOf("-") == -1) { //если после первого символа "-" больше нет еще одного дефиса
+		        probegs[i] = Integer.valueOf(str[i].substring(str[i].indexOf("-")+1)); //выделяем пробег: подстрока с символа "-" до конца (только для 1 типа машин)
+		    }
+		    else {
+		        probegs[i] = Integer.valueOf(str[i].substring(str[i].indexOf("-")+1,str[i].lastIndexOf("-"))); //выделяем пробег: с первого символа "-" до последнего символа "-"
+		        params[i] = Integer.valueOf(str[i].substring(str[i].lastIndexOf("-")+1)); //выделяем параметр: с последнего символа "-" до конца
+		    }
+		}
+		for (int i = 0; i < cars.length; i++) { //создаем массив машин
+		    Car c = new Car(types[i],nums[i],probegs[i],params[i]);
+		    cars[i] = c;
+		}
+		gsm[0] = calculateGSM("C100",cars,cost[0],rashod[0]);
+		gsm[1] = calculateGSM("C200",cars,cost[1],rashod[1]);
+		gsm[2] = calculateGSM("C300",cars,cost[2],rashod[2]);
+		gsm[3] = calculateGSM("C400",cars,cost[3],rashod[3]);
+		for (int i = 0; i < gsm.length; i++) {
+		    System.out.println("Общая стоимость расходов на ГСМ по " + (i+1) + " типу авто = " + gsm[i]);
+		    gsm_itog += gsm[i];
+		}
+		System.out.println("Общая стоимость расходов на ГСМ = " + gsm_itog);
+		System.out.println("Наибольшая стоимость расходов у машин типа " + (maximal(gsm) + 1));
+		System.out.println("Наименьшая стоимость расходов у машин типа " + (minimal(gsm) + 1));
+		showCars("C200", "param", cars); //второй параметр - это параметр сортирвки ("probeg" или "param")
+	}
+	
+	public static double calculateGSM (String type_car, Car[] cars, double cost, double rashod) {
+	    double res = 0;
+	    for (Car c: cars) {
+	        if (c.type.equals(type_car)) {
+	            res += c.probeg / 100 * cost * rashod;
+	        }
+	    }
+	    return res;
+	}
+	
+	public static int maximal (double[] n) {
+	    double ma = 0;
+	    int itog = 0;
+	    for (int i = 0; i < n.length; i++) {
+	        if (n[i] > ma) {
+	            ma = n[i];
+	            itog = i;
+	        }
+	    }
+	    return itog;
+	}
+	
+	public static int minimal (double[] n) {
+	    double mi = Double.MAX_VALUE;
+	    int itog = 0;
+	    for (int i = 0; i < n.length; i++) {
+	        if (n[i] < mi) {
+	            mi = n[i];
+	            itog = i;
+	        }
+	    }
+	    return itog;
+	}
+	
+	public static void showCars(String type_car, String sort, Car[] cars) {
+	    int size = 0, ii = 0;
+	    for (Car c: cars) { //считаем количество машин нужного типа
+	        if (c.type.equals(type_car)) {
+	            size++;
+	        }
+	    }
+	    Car[] oneTypeOfCars = new Car[size]; //создаем массив для сортировки из машин нужного типа
+	    for (int i = 0; i < cars.length; i++) {
+	        if (cars[i].type.equals(type_car)) {
+	            oneTypeOfCars[ii] = cars[i];
+	            ii++;
+	        }
+	    }
+	    Car x = new Car();
+	    if (sort.equals("probeg")) { //сортирруем пузырьком по пробегу
+	        for (int i = 0; i < size; i++) {
+	            for (int j = size - 1; j > i; j--) {
+	                if (oneTypeOfCars[j-1].probeg > oneTypeOfCars[j].probeg) {
+	                    x = oneTypeOfCars[j-1];
+	                    oneTypeOfCars[j-1] = oneTypeOfCars[j];
+	                    oneTypeOfCars[j] = x;
+	                }
+	            }
+	        }
+	    }
+	    else { //соритруем по параметру
+	        for (int i = 0; i < size; i++) {
+	            for (int j = size - 1; j > i; j--) {
+	                if (oneTypeOfCars[j-1].param > oneTypeOfCars[j].param) {
+	                    x = oneTypeOfCars[j-1];
+	                    oneTypeOfCars[j-1] = oneTypeOfCars[j];
+	                    oneTypeOfCars[j] = x;
+	                }
+	            }
+	        }
+	    }
+	    for (int i = 0; i < size; i++) {
+	        oneTypeOfCars[i].showCar();
+	    }
+	}
+
+}
