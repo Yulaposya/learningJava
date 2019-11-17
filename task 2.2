@@ -1,0 +1,151 @@
+public class Main
+{
+	static class ArrayActions {
+	    int[] a;
+	    ArrayActions (int[] array) {
+	        a = array;
+	    }
+	    
+	    public void add (int n) {
+	        int[] aAdd = new int[a.length + 1];
+	        for (int i = 0; i < a.length; i++) {
+	            aAdd[i] = a[i];
+	        }
+	        aAdd[a.length] = n;
+	        a = aAdd;
+	    }
+	    
+	    public void add (int n, int index) {
+	        int[] aAdd = new int[a.length + 1];
+	        for (int i = 0; i < index; i++) {
+	            aAdd[i] = a[i];
+	        }
+	        aAdd[index] = n;
+	        for (int i = index; i < a.length; i++) {
+	            aAdd[i + 1] = a[i];
+	        }
+	        a = aAdd;
+	    }
+	    
+	    public int size() {
+	        return a.length;
+	    }
+	    
+	    public void delete (int index) {
+	        int[] aDel = new int[a.length - 1];
+	        for (int i = 0; i < index; i++) {
+	            aDel[i] = a[i];
+	        }
+	        for (int i = index+1; i < a.length; i++) {
+	            aDel[i-1] = a[i];
+	        }
+	        a = aDel;
+	    }
+	    
+	    public void change (int n, int index) {
+	        a[index] = n;
+	    }
+	    
+	    public void show() {
+	        for (int i: a) {
+	            System.out.print(i + " ");
+	        }
+	        System.out.print("\n");
+	    }
+	    
+	    public int[] sortAsc() {
+	        int[] aSort = new int[a.length];
+	        for (int i = 0; i < a.length; i++) {
+	            aSort[i] = a[i];
+	        }
+	        int x = 0;
+	        for (int i = 0; i < a.length; i++) {
+	            for (int j = a.length - 1; j > i; j--) {
+	                if (aSort[j-1] > aSort[j]) {
+	                    x = aSort[j-1];
+	                    aSort[j-1] = aSort[j];
+	                    aSort[j] = x;
+	                }
+	            }
+	        }
+	        return aSort;
+	    }
+	    
+	    public int[] sortDesc() {
+	        int[] aSort = new int[a.length];
+	        for (int i = 0; i < a.length; i++) {
+	            aSort[i] = a[i];
+	        }
+	        int x = 0;
+	        for (int i = 0; i < a.length; i++) {
+	            for (int j = a.length - 1; j > i; j--) {
+	                if (aSort[j-1] < aSort[j]) {
+	                    x = aSort[j-1];
+	                    aSort[j-1] = aSort[j];
+	                    aSort[j] = x;
+	                }
+	            }
+	        }
+	        return aSort;
+	    }
+	    
+	    public int maximum() {
+	        int ma = 0;
+	        for (int i: a) {
+	        if (i > ma) {
+	            ma = i;
+	        }
+	    }
+	    return ma;
+	    }
+	    
+	    public int minimum() {
+	        int mi = Integer.MAX_VALUE;
+	        for (int i: a) {
+	        if (i < mi) {
+	            mi = i;
+	        }
+	    }
+	    return mi;
+	    }
+	    
+	    public void fill (int n) {
+	        for (int i = 0; i < a.length; i++) {
+	            a[i] = n;
+	        }
+	    }
+	}
+	
+	public static void main(String[] args) {
+		int[] nums = {1,2,3,4};
+		ArrayActions AA = new ArrayActions(nums);
+		System.out.print("Исходный массив: ");
+		AA.show();
+		AA.add(5);
+		System.out.print("Добавили элемент в конец массива: ");
+		AA.show();
+		AA.add(6,1);
+		System.out.print("Добавили элемент на определенную позицию массива: ");
+		AA.show();
+		System.out.println("Количество элементов массива: " + AA.size());
+		AA.delete(2);
+		System.out.print("Удалили элемент с определенной позиции массива: ");
+		AA.show();
+		AA.change(7,4);
+		System.out.print("Заменили элемент на определенной позиции массива: ");
+		AA.show();
+		ArrayActions AASortAsc = new ArrayActions(AA.sortAsc());
+		System.out.print("Отсортированный по возрастанию массив: ");
+		AASortAsc.show();
+		ArrayActions AASortDesc = new ArrayActions(AA.sortDesc());
+		System.out.print("Отсортированный по убыванию массив: ");
+		AASortDesc.show();
+		System.out.print("При этом сам массив не изменен: ");
+		AA.show();
+		System.out.println("Максимальный элемент массива: " + AA.maximum());
+		System.out.println("Минимальный элемент массива: " + AA.minimum());
+		AA.fill(7);
+		System.out.print("Заполнили массив одиновым элементом: ");
+		AA.show();
+	}
+}
