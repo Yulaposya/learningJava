@@ -3,6 +3,7 @@ public class Main
 	public static void main(String[] args) {
 	    variant1("abcabcd",'a');
 	    variant2("abcabcd",'a');
+	    variant3("abcabcd",'a');
 	}
 	public static void variant1(String forFind, char s) {
 	    System.out.print("Вариант 1\nСимвол \"" + s + "\" встречается на следующих позициях: ");
@@ -18,8 +19,7 @@ public class Main
 	}
 	public static void variant2(String forFind, char s) {
 	    System.out.print("Вариант 2\nСимвол \"" + s + "\" встречается на следующих позициях: ");
-	    int res = 0;
-	    int dl = 0;
+	    int res = 0, dl = 0;
 	    while (forFind.indexOf(s) != -1) {
 	        res++;
 	        dl += forFind.indexOf(s);
@@ -27,5 +27,15 @@ public class Main
 	        forFind = forFind.substring(forFind.indexOf(s) + 1);
 	    }
 	    System.out.println("\nКоличество символов \"" + s + "\" в введенной строке равно " + res);
+	}
+	public static void variant3(String forFind, char s) {
+	   System.out.print("Вариант 3\nСимвол \"" + s + "\" встречается на следующих позициях: ");
+	   int i = 0, res = 0;
+	   while (forFind.indexOf(s,i) != -1) {
+	       i = forFind.indexOf(s,i) + 1;
+	       res++;
+	       System.out.print(i - 1 + " ");
+	   }
+	   System.out.println("\nКоличество символов \"" + s + "\" в введенной строке равно " + res);
 	}
 }
