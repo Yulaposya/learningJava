@@ -6,7 +6,7 @@ public class Main
 	    double cost, rashod;
 	    public void showCar () {};
 	    public double calcGSM () {
-	        double res = probeg / 100 * cost * rashod;
+	        double res = probeg * cost * rashod / 100;
 	        return res;
 	    }
 	}
@@ -71,7 +71,72 @@ public class Main
 	
 	public static void main(String[] args) {
 		String[] str = {"C100_1-100","C200_1-120-1200","C300_1-120-30","C400_1-80-20","C100_2-50","C200_2-40-1000","C300_2-200-45","C400_2-100-20","C100_3-10","C200_3-170-1100","C300_3-150-29","C400_3-100-28","C100_4-300","C200_4-100-750","C300_4-32-15"};
-		String[] types = new String[str.length];
+		Car1[] cars1;
+		Truck[] trucks;
+		Bus[] buses;
+		Crane[] cranes;
+		for (int i = 100; i <= 400; i+=100) {
+		    int cnt_car = 0;
+		    for (String s: str) {
+		        if (Integer.valueOf(s.substring(1,s.indexOf("_"))) == i) {
+		            cnt_car++;
+		        }
+		    }
+		    String[] types = new String[cnt_car];
+		    String[] nums = new String[cnt_car];
+		    int[] probegs = new int[cnt_car];
+		    int[] params = new int[cnt_car];
+		    cnt_car = 0;
+		    for (String s: str) {
+		        if (Integer.valueOf(s.substring(1,s.indexOf("_"))) == i) {
+		            types[cnt_car] = s.substring(0,s.indexOf("_")); //выделяем тип: подстрока с начала до символа "_"
+		            nums[cnt_car] = s.substring(s.indexOf("_")+1, s.indexOf("-")); //выделяем номер: подстрока с символа "_" до символа "-"
+		            if (s.substring(s.indexOf("-")+1).indexOf("-") == -1) { //если после первого символа "-" больше нет еще одного дефиса
+		                probegs[cnt_car] = Integer.valueOf(s.substring(s.indexOf("-")+1)); //выделяем пробег: подстрока с символа "-" до конца (только для 1 типа машин)
+		            }
+		            else {
+		                probegs[cnt_car] = Integer.valueOf(s.substring(s.indexOf("-")+1,s.lastIndexOf("-"))); //выделяем пробег: с первого символа "-" до последнего символа "-"
+		                params[cnt_car] = Integer.valueOf(s.substring(s.lastIndexOf("-")+1)); //выделяем параметр: с последнего символа "-" до конца
+		            }
+		            cnt_car++;
+		        }
+		    }
+		    switch (i) {
+		        case 100:
+		            cars1 = new Car1[cnt_car];
+		            for (int j = 0; j < cnt_car; j++) { //создаем массив машин
+		                Car1 c = new Car1(types[j],nums[j],probegs[j]);
+		                cars1[j] = c;
+		            }
+		            break;
+		        case 200:
+		            trucks = new Truck[cnt_car];
+		            for (int j = 0; j < cnt_car; j++) { //создаем массив машин
+		                Truck c = new Truck(types[j],nums[j],probegs[j],params[j]);
+		                trucks[j] = c;
+		            }
+		            for (Truck c: trucks) {
+		                c.showCar();
+		                System.out.println(c.calcGSM());
+		            }
+		            break;
+		        case 300:
+		            buses = new Bus[cnt_car];
+		            for (int j = 0; j < cnt_car; j++) { //создаем массив машин
+		                Bus c = new Bus(types[j],nums[j],probegs[j],params[j]);
+		                buses[j] = c;
+		            }
+		            break;
+		        case 400:
+		            cranes = new Crane[cnt_car];
+		            for (int j = 0; j < cnt_car; j++) { //создаем массив машин
+		                Crane c = new Crane(types[j],nums[j],probegs[j],params[j]);
+		                cranes[j] = c;
+		            }
+		            break;
+		    }
+		}
+		/*String[] types = new String[str.length];
 		String[] nums = new String[str.length];
 		int[] probegs = new int[str.length];
 		int[] params = new int[str.length];
@@ -85,7 +150,7 @@ public class Main
 		    nums[i] = str[i].substring(str[i].indexOf("_")+1, str[i].indexOf("-")); //выделяем номер: подстрока с символа "_" до символа "-"
 		    if (str[i].substring(str[i].indexOf("-")+1).indexOf("-") == -1) { //если после первого символа "-" больше нет еще одного дефиса
 		        probegs[i] = Integer.valueOf(str[i].substring(str[i].indexOf("-")+1)); //выделяем пробег: подстрока с символа "-" до конца (только для 1 типа машин)
-		    }khhkjhh
+		    }
 		    else {
 		        probegs[i] = Integer.valueOf(str[i].substring(str[i].indexOf("-")+1,str[i].lastIndexOf("-"))); //выделяем пробег: с первого символа "-" до последнего символа "-"
 		        params[i] = Integer.valueOf(str[i].substring(str[i].lastIndexOf("-")+1)); //выделяем параметр: с последнего символа "-" до конца
@@ -106,7 +171,7 @@ public class Main
 		System.out.println("Общая стоимость расходов на ГСМ = " + gsm_itog);
 		System.out.println("Наибольшая стоимость расходов у машин типа " + (maximal(gsm) + 1));
 		System.out.println("Наименьшая стоимость расходов у машин типа " + (minimal(gsm) + 1));
-		showCars("C200", "param", cars); //второй параметр - это параметр сортирвки ("probeg" или "param")
+		showCars("C200", "param", cars); //второй параметр - это параметр сортирвки ("probeg" или "param")*/
 	}
 	
 	public static double calculateGSM (String type_car, Car[] cars, double cost, double rashod) {
@@ -143,7 +208,7 @@ public class Main
 	    return itog;
 	}
 	
-	public static void showCars(String type_car, String sort, Car[] cars) {
+	/*public static void showCars(String type_car, String sort, Car[] cars) {
 	    int size = 0, ii = 0;
 	    for (Car c: cars) { //считаем количество машин нужного типа
 	        if (c.type.equals(type_car)) {
@@ -183,6 +248,6 @@ public class Main
 	    for (int i = 0; i < size; i++) {
 	        oneTypeOfCars[i].showCar();
 	    }
-	}
+	}*/
 
 }
