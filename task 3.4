@@ -1,0 +1,95 @@
+public class Main
+{
+	static abstract class Calculator {
+	    int sizeHistory;
+	    String[] history;
+	    int now;
+	    /*Calculator(int s) {
+	        sizeHistory = s;
+	        history = new String[s];
+	        now = 0;
+	    };*/
+	    public void calc(String expression) {
+	        double num1 = 0, num2 = 0, itog = 0;
+	        String numm1;
+	        char action = ' ';
+	        char[] actions = {'+','-','*','/'};
+	        for (char c: actions) {
+		        if (expression.indexOf(c) != -1) {
+		            action = c;
+		        }
+		    }
+		    num1 = Double.valueOf(expression.substring(0,expression.indexOf(action)));
+		    num2 = Double.valueOf(expression.substring(expression.indexOf(action)+1));
+		    switch (action) {
+		        case '+':
+		            itog = num1 + num2;
+		            break;
+		        case '-':
+		            itog = num1 - num2;
+		            break;
+		        case '*':
+		            itog = num1 * num2;
+		            break;
+		        case '/':
+		            itog = num1 / num2;
+		            break;
+		    }
+	            history[now] = expression + "=" + itog;
+	            System.out.println(history[now]);
+	            now++;
+	            if (now == sizeHistory) {
+	                System.out.println("История заполнена и будет очищена");
+	                clearHistory();
+	            }
+	    }
+	    public void prevCalc() {
+	        if (now > 1) {
+	        System.out.println(history[now-2]);
+	        }
+	    }
+	    public void clearHistory() {
+	        for (int i = 0; i < history.length; i++) {
+	            history[i] = "";
+	        }
+	    }
+	}
+	
+	static class UsualCalculator extends Calculator {
+	    UsualCalculator(int s) {
+	        sizeHistory = s;
+	        history = new String[s];
+	        now = 0;
+	    };
+	}
+	
+	static class EngCalculator extends Calculator {
+	    EngCalculator(int s) {
+	        sizeHistory = s;
+	        history = new String[s];
+	        now = 0;
+	    };
+	    public void sqrt(double num) {
+	        history[now] = "sqrt(" + num + ")=" + Math.sqrt(num);
+	            System.out.println(history[now]);
+	            now++;
+	            if (now == sizeHistory) {
+	                System.out.println("История заполнена и будет очищена");
+	                clearHistory();
+	            }
+	    }
+	}
+	
+	public static void main(String[] args) {
+	    UsualCalculator usCalc = new UsualCalculator(4); //задаем размер хранимой истории (в операциях)
+	    usCalc.calc("1+2");
+	    /*usCalc.calc("3/2");
+	    usCalc.calc("5*4");
+	    usCalc.prevCalc();
+	    usCalc.calc("9-7");
+	    usCalc.prevCalc();*/
+	    EngCalculator engCalc = new EngCalculator(4); //задаем размер хранимой истории (в операциях)
+	    engCalc.calc("1+2");
+	    engCalc.sqrt(2);
+	}
+}
